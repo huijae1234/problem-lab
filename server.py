@@ -11,7 +11,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-PORT = 8765
+PORT = int(os.environ.get("PORT", "8765"))
 API_URL = "https://api.anthropic.com/v1/messages"
 
 
@@ -41,7 +41,12 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        if self.path.split("?")[0] in ("/", "/index.html"):
+        path = self.path.split("?")[0]
+        if path == "/api/health":
+            env = load_env()
+            has_key = bool(env.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY"))
+            return self._json(200, {"ok": True, "ai": has_key})
+        if path in ("/", "/index.html"):
             with open(os.path.join(ROOT, "index.html"), "rb") as f:
                 body = f.read()
             self.send_response(200)

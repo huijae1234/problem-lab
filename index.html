@@ -67,6 +67,7 @@ h1 .hl { background: linear-gradient(transparent 55%, var(--c4) 55%); padding: 0
 .tab:active { transform: translateY(3px); box-shadow: 0 0 0 var(--outline); }
 
 .shell { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 28px; align-items: start; }
+.shell[hidden] { display: none; }
 
 /* 깊이 게이지 */
 nav.gauge { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 6px; padding: 14px 10px 14px 16px; background: var(--surface); border: 2px solid var(--outline); border-radius: 20px; box-shadow: 0 5px 0 var(--outline); }
@@ -82,12 +83,14 @@ nav.gauge { position: sticky; top: 16px; display: flex; flex-direction: column; 
 .layer .mini { position: absolute; left: -30px; top: 0; width: 28px; height: 28px; display: none; }
 .layer[aria-current="step"] .mini { display: block; }
 .layer.opt .n::after { content: " 보너스"; font-size: 11px; color: var(--muted); }
-[data-step="problem"], .layer[data-i="0"] { --strong: var(--c0); --soft: var(--c0s); }
-[data-step="whys"], .layer[data-i="1"] { --strong: var(--c1); --soft: var(--c1s); }
-[data-step="tree"], .layer[data-i="2"] { --strong: var(--c2); --soft: var(--c2s); }
-[data-step="hyp"], .layer[data-i="3"] { --strong: var(--c3); --soft: var(--c3s); }
-[data-step="extra"], .layer[data-i="4"] { --strong: var(--c4); --soft: var(--c4s); }
-[data-step="scqa"], .layer[data-i="5"] { --strong: var(--c5); --soft: var(--c5s); }
+.layer:not(.opt) .n::after { content: " 필수"; font-size: 11px; color: var(--muted); }
+[data-step="problem"], .layer[data-key="problem"] { --strong: var(--c0); --soft: var(--c0s); }
+[data-step="whys"], .layer[data-key="whys"] { --strong: var(--c1); --soft: var(--c1s); }
+[data-step="hyp"], .layer[data-key="hyp"] { --strong: var(--c3); --soft: var(--c3s); }
+[data-step="result"], .layer[data-key="result"] { --strong: var(--c5); --soft: var(--c5s); }
+[data-step="tree"], .layer[data-key="tree"] { --strong: var(--c2); --soft: var(--c2s); }
+[data-step="extra"], .layer[data-key="extra"] { --strong: var(--c4); --soft: var(--c4s); }
+[data-step="scqa"], .layer[data-key="scqa"] { --strong: var(--c5); --soft: var(--c5s); }
 
 main.work { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 
@@ -112,6 +115,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(21px, 4vw
 label.f { display: flex; flex-direction: column; gap: 6px; font-family: var(--f-display); font-size: 16px; min-width: 0; }
 label.f .hint { font-family: var(--f-body); font-size: 13.5px; color: var(--muted); }
 textarea, input[type="text"] { font: inherit; font-size: 16px; color: var(--ink); background: var(--input); border: 2px solid var(--line2); border-radius: 14px; padding: 11px 14px; width: 100%; min-width: 0; resize: vertical; line-height: 1.6; }
+select, input[type="date"] { font:inherit; color:var(--ink); background:var(--input); border:2px solid var(--line2); border-radius:12px; padding:9px 11px; width:100%; }
 textarea:focus, input[type="text"]:focus { border-color: var(--outline); outline: 0; box-shadow: 0 0 0 4px var(--soft); }
 textarea { min-height: 96px; }
 textarea.s { min-height: 72px; }
@@ -156,11 +160,29 @@ textarea.s { min-height: 72px; }
 .err[hidden] { display: none; }
 .bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .status { font-size: 12.5px; color: var(--muted); min-height: 1.2em; }
+.server-state { display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--muted); }
+.server-state::before { content:""; width:9px; height:9px; border-radius:50%; background:var(--danger); border:1.5px solid var(--outline); }
+.server-state.ok::before { background:var(--c2); }
+.privacy { padding:10px 14px; background:var(--c4s); border:2px dashed var(--outline); border-radius:14px; font-size:13px; }
+.fact-grid { display:grid; grid-template-columns:minmax(150px,.7fr) minmax(0,1.3fr); gap:10px; }
+.fact-grid select { font:inherit; color:var(--ink); background:var(--input); border:2px solid var(--line2); border-radius:12px; padding:9px 11px; width:100%; }
+.final-sheet { display:grid; gap:12px; }
+.final-block { padding:12px 14px; border:2px solid var(--outline); border-radius:14px; background:var(--input); }
+.final-block b { display:block; font-family:var(--f-display); font-weight:400; margin-bottom:4px; }
+.gate { padding:14px 16px; border:2px solid var(--danger); border-radius:16px; background:var(--surface); }
+.gate p { margin:0 0 10px; }
+.filters { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.filters input { flex:1 1 220px; }
+.filters .btn[aria-pressed="true"] { background:var(--c3); }
+.rec-meta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.rec-meta input { flex:1 1 180px; }
+.status-chip { display:inline-block; font-family:var(--f-display); font-size:13px; border:2px solid var(--outline); border-radius:999px; padding:1px 10px; background:var(--c2s); }
 
 .out { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--input); border: 2px solid var(--outline); border-radius: 14px; padding: 14px 16px; font-size: 15px; max-height: 420px; overflow: auto; margin: 0; font-family: var(--f-body); }
 .out[hidden] { display: none; }
 
 .records { display: flex; flex-direction: column; gap: 16px; }
+.records[hidden] { display: none; }
 .rec { background: var(--surface); border: 2px solid var(--outline); border-radius: 20px; box-shadow: 0 5px 0 var(--outline); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .rec .when { font-family: var(--f-display); font-size: 14px; color: var(--muted); }
 .shift { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
@@ -217,6 +239,7 @@ textarea.s { min-height: 72px; }
   .phead { padding: 14px 16px 12px; }
   .shift { grid-template-columns: minmax(0, 1fr); }
   .guide .moleBig { flex-basis: 64px; width: 64px; height: 64px; }
+  .fact-grid { grid-template-columns:minmax(0,1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
@@ -231,6 +254,7 @@ textarea.s { min-height: 72px; }
     <div>
       <h1><span class="hl">문제</span> 발굴소</h1>
       <p class="sub">막연한 문제를 한 층씩 파내려가는 10분 연습. 곡괭이질은 내가, 질문은 두더지가.</p>
+      <span class="server-state" id="serverState">AI 연결 확인 중</span>
     </div>
     <div class="tabs" role="tablist">
       <button class="tab" id="newTop" type="button" style="background:var(--c4);color:var(--on)">+ 새 문제</button>
@@ -284,6 +308,34 @@ textarea.s { min-height: 72px; }
           </div>
         </div>
         <div class="card" data-card="ask" data-line="단단한 지층이네요. 곡괭이로 두드려 볼게요."></div>
+      </section>
+
+      <!-- 3m 최종 결과와 사후 검증 -->
+      <section class="panel" data-step="result" hidden>
+        <div class="phead"><div class="ptop"><span class="eyebrow">3m · 최종 발굴 결과</span><span class="dots"></span></div>
+          <h2>지금까지 파낸 문제를 한 문장으로 정리해 볼까요?</h2>
+          <p class="how">AI는 초안을 도울 뿐입니다. 최종 문장은 내가 고치고 확정합니다.</p></div>
+        <div class="card" data-card data-line="발굴한 조각을 한 장에 모아 볼게요. 최종 판단은 당신 몫이에요.">
+          <label class="f" for="finalProblem">최종 문제 한 문장<textarea id="finalProblem" data-bind="finalProblem" placeholder="누가, 언제, 어떤 불편을 겪고 있으며 무엇을 확인해야 하는지 한 문장으로 적어 보세요."></textarea></label>
+          <label class="f" for="facts">확인된 사실<textarea id="facts" class="s" data-bind="facts" placeholder="직접 확인했거나 근거가 있는 사실"></textarea></label>
+          <label class="f" for="guesses">아직 추측인 내용<textarea id="guesses" class="s" data-bind="guesses" placeholder="아직 확인하지 않은 생각"></textarea></label>
+          <label class="f" for="confirmQuestions">추가로 확인할 질문<textarea id="confirmQuestions" class="s" data-bind="confirmQuestions" placeholder="누구에게 무엇을 확인할까요?"></textarea></label>
+          <label class="f" for="nextAction">다음 행동 한 가지<input id="nextAction" type="text" data-bind="nextAction" placeholder="예: 지난 모임 불참자 3명에게 이유 묻기"></label>
+          <div class="privacy">개인정보, 비밀번호, 회사 내부정보는 적지 마세요. AI 되묻기를 누를 때 작성 내용이 Claude로 전송됩니다.</div>
+          <div class="row"><button class="btn" id="confirmFinal" type="button">최종 문제 확정</button><button class="btn ghost" id="goVerify" type="button">확인하러 가기</button><button class="btn ghost" id="copyResult" type="button">결과 전체 복사</button><span class="note" id="resultNote"></span></div>
+        </div>
+        <div class="card" data-card data-line="현장에서 확인한 결과를 들고 돌아오셨군요! 기록을 갱신해 볼까요?">
+          <span class="eyebrow" style="width:fit-content">돌아와서 기록하기</span>
+          <label class="f">무엇을 확인했나요?<input type="text" data-bind="validation.what"></label>
+          <label class="f">언제 확인했나요?<input type="date" data-bind="validation.when"></label>
+          <label class="f">확인 결과<textarea class="s" data-bind="validation.result"></textarea></label>
+          <label class="f">확인된 사실<textarea class="s" data-bind="validation.confirmedFacts"></textarea></label>
+          <label class="f">기존 추측과 달랐던 점<textarea class="s" data-bind="validation.differences"></textarea></label>
+          <label class="f">가설 판단<select data-bind="validation.decision"><option value="">선택하지 않음</option><option value="keep">유지</option><option value="revise">수정 필요</option><option value="hold">판단 보류</option></select></label>
+          <label class="f">수정된 최종 문제 문장<textarea class="s" data-bind="validation.updatedProblem"></textarea></label>
+          <label class="f">다음 행동<input type="text" data-bind="validation.nextAction"></label>
+          <div class="row"><button class="btn" id="saveValidation" type="button">검증 결과 저장</button><span class="note" id="validationNote"></span></div>
+        </div>
       </section>
 
       <!-- 2m 이슈 트리 -->
@@ -389,6 +441,7 @@ textarea.s { min-height: 72px; }
         <button class="btn ghost" id="prevBtn" type="button">이전 칸</button>
         <button class="btn" id="nextBtn" type="button">다음 칸</button>
       </div>
+      <div class="gate" id="gate" hidden><p id="gateText"></p><div class="row"><button class="btn" id="gateBack" type="button">현재 칸으로 돌아가기</button><button class="btn ghost" id="gateSkip" type="button">이 단계 건너뛰기</button><button class="btn ghost" id="gateContinue" type="button">현재 내용으로 계속</button></div></div>
       <div class="status" id="status" aria-live="polite"></div>
     </main>
   </div>
@@ -434,22 +487,25 @@ textarea.s { min-height: 72px; }
   }
 
   var STEPS = [
-    { key: "problem", depth: "0m", name: "문제 입력", label: "문제 입력", cheer: "지표면 정리 완료!", xp: 100,
+    { key: "problem", depth: "0m", name: "문제 입력", label: "문제 입력", cheer: "지표면 정리 완료!",
       crit: ["상황이 구체적이다 (누가·언제·얼마나 자주)", "해결책이 아니라 불편한 상황이다", "범위가 좁고 선명하다"],
       focus: "해결책이 아니라 불편한 상황으로 쓰였는지, 누가·언제·얼마나 자주·지금은 어떻게 버티는지가 드러나는지, 말이 너무 넓거나 모호하지 않은지 살핀다." },
-    { key: "whys", depth: "1m", name: "5 Whys", label: "5 Whys", cheer: "원인 지층 돌파!", xp: 100,
+    { key: "whys", depth: "1m", name: "원인 파기", label: "5 Whys", cheer: "원인 지층 돌파!",
       crit: ["각 '왜'가 앞 칸에서 이어진다", "근거 없는 단정이 없다", "모르는 곳을 '확인 필요'로 멈췄다"],
       focus: "각 '왜' 사이의 인과가 실제로 이어지는지, 근거 없이 단정한 칸은 없는지, '확인 필요'로 멈춘 곳이 적절한지 살핀다. 다섯 번을 억지로 채우라고 하지 않는다." },
-    { key: "tree", depth: "2m", name: "이슈 트리", label: "이슈 트리 · MECE", cheer: "갈래 지도 완성!", xp: 100,
-      crit: ["나누는 기준이 하나다", "갈래끼리 겹치지 않는다", "빠진 갈래가 없는지 살폈다"],
-      focus: "나누는 기준이 하나로 일관되는지, 갈래끼리 겹치는지, 빠진 갈래가 있는지, 세 갈래를 만들었다고 원인이 다 설명됐다고 착각하지 않는지 살핀다." },
-    { key: "hyp", depth: "3m", name: "가설과 반례", label: "가설과 반례", cheer: "반례 곡괭이 장착 완료!", xp: 100,
+    { key: "hyp", depth: "2m", name: "가설·확인", label: "가설과 반례", cheer: "반례 곡괭이 장착 완료!",
       crit: ["틀릴 수 있는 문장이다", "반례가 눈으로 확인 가능하다", "확인 방법이 작고 바로 할 수 있다"],
       focus: "가설이 틀릴 수 있는 형태로 쓰였는지, 반례가 구체적으로 관찰 가능한지, 확인 방법이 작고 바로 할 수 있는지 살핀다." },
-    { key: "extra", depth: "+", name: "보너스 구역", label: "5 Hows · 피시본", opt: true, cheer: "보너스 구역 탐사 끝!", xp: 50,
+    { key: "result", depth: "3m", name: "최종 결과", label: "최종 문제와 검증", cheer: "최종 문제를 찾았어요!",
+      crit: ["최종 문제가 구체적이다", "사실과 추측이 구분된다", "확인 질문과 다음 행동이 있다"],
+      focus: "최종 문제 문장이 구체적인지, 확인된 사실과 추측을 구분했는지, 다음 확인 행동이 실제로 할 수 있는 크기인지 살핀다." },
+    { key: "tree", depth: "+", name: "이슈 트리", label: "이슈 트리 · MECE", opt: true, cheer: "갈래 지도 완성!",
+      crit: ["나누는 기준이 하나다", "갈래끼리 겹치지 않는다", "빠진 갈래가 없는지 살폈다"],
+      focus: "나누는 기준이 하나로 일관되는지, 갈래끼리 겹치는지, 빠진 갈래가 있는지, 세 갈래를 만들었다고 원인이 다 설명됐다고 착각하지 않는지 살핀다." },
+    { key: "extra", depth: "+", name: "5 Hows·피시본", label: "5 Hows · 피시본", opt: true, cheer: "보너스 구역 탐사 끝!",
       crit: ["구체적인 행동으로 내려간다", "놓친 관점을 찾았다"],
       focus: "5 Hows가 있다면 각 '어떻게'가 점점 구체적인 행동으로 내려가는지, 피시본이 있다면 사람·절차·자료·도구 중 비어 있거나 놓친 관점이 무엇인지 살핀다." },
-    { key: "scqa", depth: "4m", name: "SCQA", label: "SCQA", cheer: "유물 발굴 완료!", xp: 100,
+    { key: "scqa", depth: "+", name: "SCQA·프롬프트", label: "SCQA", opt: true, cheer: "유물 발굴 완료!",
       crit: ["상황이 모두가 동의할 사실이다", "문제가 뾰족하다", "질문이 문제에서 나온다", "제안이 질문에 답한다"],
       focus: "상황은 모두가 동의할 사실인지, 문제가 앞의 탐색에서 나온 뾰족한 어긋남인지, 질문이 문제에서 자연스럽게 나오는지, 제안이 그 질문에 실제로 답하는지 살핀다." }
   ];
@@ -464,24 +520,31 @@ textarea.s { min-height: 72px; }
       id: "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
       createdAt: Date.now(), updatedAt: Date.now(),
       problem: "",
-      whys: [{ a: "", u: false }, { a: "", u: false }, { a: "", u: false }, { a: "", u: false }, { a: "", u: false }],
+      title: "", tags: "", status: "draft", returnedAt: null,
+      whys: [{ a: "", u: false, status: "", evidence: "", check: "" }, { a: "", u: false, status: "", evidence: "", check: "" }, { a: "", u: false, status: "", evidence: "", check: "" }, { a: "", u: false, status: "", evidence: "", check: "" }, { a: "", u: false, status: "", evidence: "", check: "" }],
       whysNextQ: "",
-      tree: { criterion: "", n: 3, b: [{ name: "", causes: "" }, { name: "", causes: "" }, { name: "", causes: "" }, { name: "", causes: "" }, { name: "", causes: "" }] },
+      tree: { criterion: "", n: 3, b: [{ name: "", causes: "", status: "", evidence: "" }, { name: "", causes: "", status: "", evidence: "" }, { name: "", causes: "", status: "", evidence: "" }, { name: "", causes: "", status: "", evidence: "" }, { name: "", causes: "", status: "", evidence: "" }] },
       hyp: { pick: "", claim: "", counter: "", check: "" },
       hows: { solution: "", items: ["", "", "", "", ""] },
       fish: { people: "", process: "", data: "", tool: "" },
       scqa: { s: "", c: "", q: "", a: "" },
-      tone: { problem: "coach", whys: "coach", tree: "coach", hyp: "coach", extra: "coach", scqa: "coach" },
-      replies: { problem: "", whys: "", tree: "", hyp: "", extra: "", scqa: "" },
+      finalProblem: "", confirmedProblem: "", facts: "", guesses: "", confirmQuestions: "", nextAction: "", finalConfirmed: false, finalHistory: [],
+      validation: { what: "", when: "", result: "", confirmedFacts: "", differences: "", decision: "", updatedProblem: "", nextAction: "", savedAt: null },
+      tone: { problem: "coach", whys: "coach", tree: "coach", hyp: "coach", result: "coach", extra: "coach", scqa: "coach" },
+      replies: { problem: "", whys: "", tree: "", hyp: "", result: "", extra: "", scqa: "" },
       scores: {},
       prompt: ""
     };
   }
-  /* 경험치: 단계별 최고 점수 비율 x 단계 가중치 + 프롬프트 완성 50 */
+  /* 경험치는 AI 점수가 아니라 한 번만 인정되는 실제 탐색 행동으로 계산한다. */
   function xpOf(s) {
     var t = 0;
-    STEPS.forEach(function (st) { var sc = s.scores && s.scores[st.key]; if (sc) t += Math.round(sc.best * st.xp); });
-    if (s.prompt) t += 50;
+    if (s.problem && s.problem.trim()) t += 20;
+    if ((s.whys || []).some(function (w) { return w.status; })) t += 20;
+    if ((s.confirmQuestions || "").trim() || (s.whysNextQ || "").trim()) t += 20;
+    if (s.finalConfirmed) t += 30;
+    if (s.returnedAt) t += 20;
+    if (s.validation && s.validation.savedAt) t += 30;
     return t;
   }
   var TITLES = ["새내기 두더지", "삽질 견습생", "곡괭이 수습", "지층 탐험가", "문제 고고학자", "발굴 대장", "전설의 발굴왕"];
@@ -505,6 +568,18 @@ textarea.s { min-height: 72px; }
     return over === undefined || over === null ? base : over;
   }
   function clone(x) { return JSON.parse(JSON.stringify(x)); }
+  function normalizeState(raw) {
+    var s = merge(blank(), raw || {});
+    s.whys.forEach(function (w) {
+      if (!w.status && w.u) w.status = "verify";
+      w.u = w.status === "verify";
+    });
+    if (!s.status) s.status = "draft";
+    if (!Array.isArray(s.finalHistory)) s.finalHistory = [];
+    if (!s.finalProblem.trim() && raw && raw.scqa && raw.scqa.c) s.finalProblem = String(raw.scqa.c).trim();
+    if (!s.confirmedProblem && s.finalConfirmed) s.confirmedProblem = s.finalProblem;
+    return s;
+  }
 
   var S = blank();
   var stepI = 0, cardI = 0;
@@ -517,7 +592,7 @@ textarea.s { min-height: 72px; }
   var gauge = $("#gauge");
   STEPS.forEach(function (st, i) {
     var b = document.createElement("button");
-    b.type = "button"; b.className = "layer" + (st.opt ? " opt" : ""); b.dataset.i = i;
+    b.type = "button"; b.className = "layer" + (st.opt ? " opt" : ""); b.dataset.i = i; b.dataset.key = st.key;
     b.innerHTML = '<span class="mini">' + mole("idle") + '</span><span class="node">' + st.depth + '</span><span class="n">' + st.name + '</span><span class="sc"></span>';
     b.addEventListener("click", function () { gotoPos(i, 0); });
     gauge.appendChild(b);
@@ -529,7 +604,9 @@ textarea.s { min-height: 72px; }
     d.className = "why"; d.dataset.why = i;
     d.innerHTML = '<span class="lbl">왜 ' + (i + 1) + (i === 0 ? " · 처음 쓴 문제가 왜 생겼을까?" : " · 방금 쓴 이유는 또 왜 생겼을까?") + '</span>' +
       '<textarea class="s" id="why' + i + '" data-bind="whys.' + i + '.a" aria-label="왜 ' + (i + 1) + '"></textarea>' +
-      '<label class="chk"><input type="checkbox" data-bind="whys.' + i + '.u"> 근거가 없어요 · 확인 필요</label>';
+      '<div class="fact-grid"><label class="f">이 내용의 상태<select data-bind="whys.' + i + '.status"><option value="">선택해 주세요</option><option value="fact">확인된 사실</option><option value="guess">아직 추측</option><option value="verify">확인 필요</option><option value="wrong">확인 결과와 맞지 않음</option></select></label>' +
+      '<label class="f">짧은 근거·출처<input type="text" data-bind="whys.' + i + '.evidence" placeholder="예: 지난 모임 불참자 3명 답변"></label>' +
+      '<label class="f">확인 방법<input type="text" data-bind="whys.' + i + '.check" placeholder="예: 불참자에게 이유 물어보기"></label></div>';
     whyRows.appendChild(d);
   }
   var brs = $("#branches");
@@ -537,7 +614,9 @@ textarea.s { min-height: 72px; }
     var bd = document.createElement("div");
     bd.className = "branch"; bd.dataset.br = j;
     bd.innerHTML = '<label class="f">갈래 ' + (j + 1) + '<input type="text" data-bind="tree.b.' + j + '.name" placeholder="갈래 이름"></label>' +
-      '<label class="f">원인 후보<textarea class="s" data-bind="tree.b.' + j + '.causes" placeholder="이 갈래에서 생각나는 원인들"></textarea></label>';
+      '<label class="f">원인 후보<textarea class="s" data-bind="tree.b.' + j + '.causes" placeholder="이 갈래에서 생각나는 원인들"></textarea></label>' +
+      '<div class="fact-grid"><label class="f">상태<select data-bind="tree.b.' + j + '.status"><option value="">선택해 주세요</option><option value="fact">확인된 사실</option><option value="guess">아직 추측</option><option value="verify">확인 필요</option><option value="wrong">확인 결과와 맞지 않음</option></select></label>' +
+      '<label class="f">근거·출처<input type="text" data-bind="tree.b.' + j + '.evidence"></label></div>';
     brs.appendChild(bd);
   }
   var howRows = $("#howRows");
@@ -582,6 +661,9 @@ textarea.s { min-height: 72px; }
   document.addEventListener("input", function (e) {
     var el = e.target; var p = el.dataset && el.dataset.bind; if (!p) return;
     setPath(S, p, el.type === "checkbox" ? el.checked : el.value);
+    if (/^whys\.\d+\.status$/.test(p)) {
+      var wi = Number(p.split(".")[1]); S.whys[wi].u = S.whys[wi].status === "verify";
+    }
     refresh(); touch();
   });
   function applyState() {
@@ -598,7 +680,7 @@ textarea.s { min-height: 72px; }
     $$("[data-why]").forEach(function (row, i) {
       row.hidden = !show;
       if (show) {
-        if (S.whys[i].u) { stopped = true; show = false; }
+        if (S.whys[i].status === "verify") { stopped = true; show = false; }
         else if (!S.whys[i].a.trim()) show = false;
       }
     });
@@ -611,7 +693,7 @@ textarea.s { min-height: 72px; }
     STEPS.forEach(function (st, i) {
       var l = gauge.children[i + 1];
       l.classList.toggle("done", !!filled(st.key));
-      var scr = S.scores[st.key]; $(".sc", l).textContent = scr ? Math.round(scr.pct * 100) : "";
+      var scr = S.scores[st.key]; $(".sc", l).textContent = scr ? (scr.pct >= .67 ? "충분함" : "보완 필요") : "";
       if (i === stepI) l.setAttribute("aria-current", "step"); else l.removeAttribute("aria-current");
       var p = panels[st.key];
       var ok = !!filled(st.key);
@@ -646,13 +728,12 @@ textarea.s { min-height: 72px; }
     el.hidden = false;
     if (!sc.crit.length) {
       var nt = document.createElement("span"); nt.className = "note";
-      nt.textContent = "이번 점수는 읽지 못했어요. 이전 최고 " + Math.round(sc.best * 100) + "점은 그대로예요.";
+      nt.textContent = "이번 AI 점검 기준을 읽지 못했어요. 작성 내용과 경험치는 그대로 저장됐어요.";
       el.appendChild(nt); return;
     }
-    var st = STEPS.filter(function (x) { return x.key === key; })[0];
     var head = document.createElement("div"); head.className = "sHead";
-    var h1 = document.createElement("span"); h1.textContent = "발굴 점수 " + Math.round(sc.pct * 100) + "점";
-    var h2 = document.createElement("small"); h2.textContent = "최고 " + Math.round(sc.best * 100) + "점 · +" + Math.round(sc.best * st.xp) + " XP";
+    var h1 = document.createElement("span"); h1.textContent = "현재 AI 점검 · " + (sc.pct >= .67 ? "충분함" : sc.pct > 0 ? "보완 필요" : "비어 있음");
+    var h2 = document.createElement("small"); h2.textContent = "현재 작성 내용 기준 · 경험치와 별개";
     head.append(h1, h2); el.appendChild(head);
     sc.crit.forEach(function (c) {
       var row = document.createElement("div"); row.className = "crit";
@@ -700,6 +781,10 @@ textarea.s { min-height: 72px; }
     cs.forEach(function (el, i) { el.hidden = i !== cardI; });
     $$(".dots i", panels[STEPS[stepI].key]).forEach(function (d, i) { d.classList.toggle("on", i <= cardI); });
     var line = cs[cardI].dataset.line || "";
+    if (STEPS[stepI].key === "result" && !S.finalProblem.trim()) {
+      S.finalProblem = (S.scqa.c || S.problem || "").trim();
+      applyState();
+    }
     setMole("idle", line);
     var last = cardI === cs.length - 1;
     var lastAll = stepI === STEPS.length - 1 && last;
@@ -708,7 +793,8 @@ textarea.s { min-height: 72px; }
     refresh();
     if (window.innerWidth < 860) { var t = $(".guide"); if (t && t.scrollIntoView) t.scrollIntoView({ block: "start" }); }
   }
-  function next() {
+  var pendingAdvance = null;
+  function advance() {
     var cs = cards[STEPS[stepI].key];
     if (cardI < cs.length - 1) { gotoPos(stepI, cardI + 1); return; }
     if (stepI < STEPS.length - 1) {
@@ -719,6 +805,25 @@ textarea.s { min-height: 72px; }
       return;
     }
     newProblem();
+  }
+  function missingFor(key) {
+    if (key === "problem" && !S.problem.trim()) return "처음 문제를 한 문장 이상 적어 주세요.";
+    if (key === "whys" && (!S.whys[0].a.trim() || !S.whys[0].status)) return "첫 번째 원인과 그 내용이 사실인지 추측인지 선택해 주세요.";
+    if (key === "hyp" && (!S.hyp.claim.trim() || !S.hyp.check.trim())) return "현재 가설과 가장 작은 확인 방법을 적어 주세요.";
+    if (key === "result" && (!S.finalProblem.trim() || !S.nextAction.trim())) return "최종 문제 한 문장과 다음 행동 한 가지를 적어 주세요.";
+    return "";
+  }
+  function next() {
+    var cs = cards[STEPS[stepI].key];
+    if (cardI < cs.length - 1) { advance(); return; }
+    var st = STEPS[stepI], miss = missingFor(st.key);
+    if (!st.opt && miss) {
+      pendingAdvance = advance;
+      $("#gateText").textContent = miss;
+      $("#gate").hidden = false;
+      return;
+    }
+    advance();
   }
   function newProblem() {
     Object.keys(ctl).forEach(function (k) { if (ctl[k]) ctl[k].abort(); });
@@ -741,6 +846,9 @@ textarea.s { min-height: 72px; }
   }
   $("#nextBtn").addEventListener("click", next);
   $("#prevBtn").addEventListener("click", prev);
+  $("#gateBack").addEventListener("click", function () { $("#gate").hidden = true; pendingAdvance = null; });
+  $("#gateSkip").addEventListener("click", function () { $("#gate").hidden = true; var f = pendingAdvance; pendingAdvance = null; if (f) f(); });
+  $("#gateContinue").addEventListener("click", function () { $("#gate").hidden = true; var f = pendingAdvance; pendingAdvance = null; if (f) f(); });
 
   var cheerTimer = null;
   function cheer(text) {
@@ -769,6 +877,7 @@ textarea.s { min-height: 72px; }
       case "whys": return S.whys[0].a.trim();
       case "tree": return S.tree.b.some(function (b) { return b.name.trim() || b.causes.trim(); });
       case "hyp": return S.hyp.claim.trim() || S.hyp.pick.trim();
+      case "result": return S.finalProblem.trim() && S.nextAction.trim();
       case "extra": return S.hows.solution.trim() || S.hows.items.some(function (x) { return x.trim(); }) ||
         S.fish.people.trim() || S.fish.process.trim() || S.fish.data.trim() || S.fish.tool.trim();
       case "scqa": return S.scqa.c.trim() && S.scqa.q.trim();
@@ -781,13 +890,13 @@ textarea.s { min-height: 72px; }
     var w = [];
     for (var i = 0; i < 5; i++) {
       var r = S.whys[i];
-      if (r.a.trim() || r.u) w.push("왜 " + (i + 1) + ": " + (r.a.trim() || "(비어 있음)") + (r.u ? " [사용자가 '근거 없음·확인 필요'로 표시]" : ""));
-      if (r.u) break;
+      if (r.a.trim() || r.status) w.push("왜 " + (i + 1) + ": " + (r.a.trim() || "(비어 있음)") + " [" + statusName(r.status) + "]" + (r.evidence.trim() ? " 근거: " + r.evidence.trim() : "") + (r.check.trim() ? " 확인 방법: " + r.check.trim() : ""));
+      if (r.status === "verify") break;
     }
     if (w.length) L.push("[5 Whys]\n" + w.join("\n"));
     if (S.whysNextQ.trim()) L.push("[다음에 확인할 질문] " + S.whysNextQ.trim());
     var tr = [];
-    S.tree.b.forEach(function (b, i) { if (i < S.tree.n && (b.name.trim() || b.causes.trim())) tr.push("- 갈래 '" + (b.name.trim() || "이름 없음") + "': " + (b.causes.trim() || "(원인 미작성)")); });
+    S.tree.b.forEach(function (b, i) { if (i < S.tree.n && (b.name.trim() || b.causes.trim())) tr.push("- 갈래 '" + (b.name.trim() || "이름 없음") + "': " + (b.causes.trim() || "(원인 미작성)") + " [" + statusName(b.status) + "]" + (b.evidence.trim() ? " 근거: " + b.evidence.trim() : "")); });
     if (tr.length) L.push("[이슈 트리 · 나누는 기준: " + (S.tree.criterion.trim() || "미작성") + "]\n" + tr.join("\n"));
     var h = S.hyp;
     if (h.pick.trim() || h.claim.trim() || h.counter.trim() || h.check.trim())
@@ -797,7 +906,16 @@ textarea.s { min-height: 72px; }
     var f = S.fish;
     if (f.people.trim() || f.process.trim() || f.data.trim() || f.tool.trim())
       L.push("[피시본] 사람: " + (f.people.trim() || "-") + " / 절차: " + (f.process.trim() || "-") + " / 자료: " + (f.data.trim() || "-") + " / 도구: " + (f.tool.trim() || "-"));
+    if (S.finalProblem.trim() || S.facts.trim() || S.guesses.trim()) L.push(resultText(S));
     return L.join("\n\n");
+  }
+  function statusName(v) { return ({ fact: "확인된 사실", guess: "아직 추측", verify: "확인 필요", wrong: "확인 결과와 맞지 않음" })[v] || "상태 미선택"; }
+  function resultText(s) {
+    var h = s.hyp || {}, v = s.validation || {};
+    var out = ["[최종 발굴 결과]", "처음 문제: " + (s.problem || "-"), "최종 문제 한 문장: " + (s.finalProblem || "-"), "확인된 사실: " + (s.facts || "-"), "아직 추측: " + (s.guesses || "-"), "추가 확인 질문: " + (s.confirmQuestions || s.whysNextQ || "-"), "현재 가설: " + (h.claim || "-"), "반례: " + (h.counter || "-"), "가장 작게 확인할 방법: " + (h.check || "-"), "다음 행동: " + (s.nextAction || "-")];
+    if (v.savedAt) out.push("", "[검증 결과]", "무엇을 확인했는지: " + (v.what || "-"), "확인한 때: " + (v.when || "-"), "확인 결과: " + (v.result || "-"), "확인된 사실: " + (v.confirmedFacts || "-"), "기존 추측과 달랐던 점: " + (v.differences || "-"), "가설 판단: " + (v.decision || "-"), "다음 행동: " + (v.nextAction || "-"));
+    if (s.finalHistory && s.finalHistory.length) out.push("", "[최종 문제 변경 기록]", s.finalHistory.map(function (x) { return fmt(x.at) + " · " + (x.from || "-") + " → " + (x.to || "-"); }).join("\n"));
+    return out.join("\n");
   }
   function scqaText() {
     var s = S.scqa;
@@ -860,8 +978,7 @@ textarea.s { min-height: 72px; }
       return { n: name, s: s, w: String(a.w || "").slice(0, 90) };
     });
     var pct = sum / (3 * crit.length);
-    var prev = S.scores[key];
-    S.scores[key] = { crit: crit, pct: pct, best: Math.max(pct, prev ? prev.best : 0) };
+    S.scores[key] = { crit: crit, pct: pct };
     return true;
   }
   /* 되묻기 결과를 저장하고 경험치·레벨 변화를 알린다 */
@@ -870,7 +987,7 @@ textarea.s { min-height: 72px; }
     var sp = splitReply(text);
     S.replies[key] = sp.q.trim();
     var ok = applyScore(key, sp.j);
-    if (!ok && S.scores[key]) S.scores[key] = { crit: [], pct: S.scores[key].pct, best: S.scores[key].best };
+    if (!ok) S.scores[key] = { crit: [], pct: 0 };
     var gain = xpOf(S) - xb, li = lvInfo(totalXp());
     if (li.L > lb) cheer("레벨 업! Lv." + li.L + " " + li.title);
     else if (gain > 0) cheer("+" + gain + " XP");
@@ -894,7 +1011,7 @@ textarea.s { min-height: 72px; }
         onText: function (u) { var q = splitReply(u.text).q; rts.forEach(function (r) { r.classList.remove("thinking"); r.textContent = q; }); }
       });
       var g = commitReply(key, res.text);
-      setMole("happy", g.ok ? "점수는 " + Math.round(S.scores[key].pct * 100) + "점! 질문을 곱씹어 보세요." : "질문을 던졌어요! 점수는 읽지 못했어요.");
+      setMole("happy", g.ok ? "현재 내용을 점검했어요. 질문을 곱씹어 보세요." : "질문을 던졌어요! 점검 기준은 읽지 못했어요.");
     } catch (e) {
       if (e && e.text && e.code !== "refused") { commitReply(key, e.text); }
       if (!e || e.code !== "cancelled") { errs.forEach(function (x) { x.textContent = errCopy(e); x.hidden = false; }); setMole("oops", "앗, 곡괭이가 헛돌았어요."); }
@@ -927,10 +1044,8 @@ textarea.s { min-height: 72px; }
     ].join("\n");
     try {
       var res = await sampleFn(q, { cache: false, signal: ctl.prompt.signal, onText: function (u) { out.textContent = u.text; } });
-      var firstPrompt = !S.prompt, lb = lvInfo(totalXp()).L;
       S.prompt = res.text; note.textContent = ""; touch();
-      var li = lvInfo(totalXp());
-      cheer(li.L > lb ? "레벨 업! Lv." + li.L + " " + li.title : (firstPrompt ? "유물 발굴 완료! +50 XP" : "유물 발굴 완료!"));
+      cheer("유물 발굴 완료!");
       setMole("happy", "발굴 성공! 복사해서 바이브코딩에 써 보세요.");
     } catch (e) {
       if (e && e.text) { S.prompt = e.text; }
@@ -965,6 +1080,42 @@ textarea.s { min-height: 72px; }
   });
   $("#addBranch").addEventListener("click", function () { S.tree.n = Math.min(5, S.tree.n + 1); refresh(); touch(); });
 
+  function rememberFinal(next) {
+    next = (next || "").trim();
+    if (!next) return false;
+    var prev = (S.confirmedProblem || "").trim();
+    var last = S.finalHistory[S.finalHistory.length - 1];
+    if (prev !== next && (!last || last.to !== next)) S.finalHistory.push({ at: Date.now(), from: prev || S.problem, to: next });
+    S.finalProblem = next;
+    S.confirmedProblem = next;
+    return true;
+  }
+  $("#confirmFinal").addEventListener("click", function () {
+    if (!rememberFinal(S.finalProblem)) { $("#resultNote").textContent = "최종 문제 문장을 먼저 적어 주세요."; return; }
+    S.finalConfirmed = true;
+    if (S.validation.savedAt) S.status = "complete";
+    $("#resultNote").textContent = "최종 문제 문장을 확정하고 변경 기록에 남겼어요.";
+    saveNow(); refresh();
+  });
+  $("#goVerify").addEventListener("click", function () {
+    if (!S.finalProblem.trim()) { $("#resultNote").textContent = "최종 문제 문장을 먼저 적어 주세요."; return; }
+    S.status = "checking"; saveNow();
+    $("#resultNote").textContent = "‘확인하러 감’으로 저장했어요. 나중에 이 기록을 다시 열어 결과를 적어 주세요.";
+    refresh();
+  });
+  $("#copyResult").addEventListener("click", function () {
+    var text = resultText(S); copyText(text, $("#finalProblem"), $("#resultNote"));
+  });
+  $("#saveValidation").addEventListener("click", function () {
+    var v = S.validation;
+    if (!v.result.trim()) { $("#validationNote").textContent = "확인 결과를 먼저 적어 주세요."; return; }
+    if (v.updatedProblem.trim() && v.updatedProblem.trim() !== S.finalProblem.trim()) rememberFinal(v.updatedProblem);
+    if (!S.returnedAt) S.returnedAt = Date.now();
+    v.savedAt = Date.now(); S.status = "complete"; S.finalConfirmed = true;
+    $("#validationNote").textContent = "검증 결과와 최종 문제 변경 기록을 저장했어요.";
+    saveNow(); applyState();
+  });
+
   /* ---------- 저장 ---------- */
   var LS = "munje-balgulso-v1";
   function lsRead() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch (e) { return {}; } }
@@ -981,6 +1132,11 @@ textarea.s { min-height: 72px; }
       chain = chain.then(function () { return persist(snap); });
     }, 1200);
   }
+  function saveNow() {
+    if (!S.problem.trim()) return;
+    clearTimeout(timer); timer = null; S.updatedAt = Date.now();
+    var snap = clone(S); chain = chain.then(function () { return persist(snap); });
+  }
   async function persist(snap) {
     recXp[snap.id] = xpOf(snap);
     if (store.kind === "db") {
@@ -996,7 +1152,8 @@ textarea.s { min-height: 72px; }
       try { var snap = await store.col.get(); snap.docs.forEach(function (d) { out.push(clone(d.data())); }); } catch (e) {}
     }
     var all = lsRead();
-    Object.keys(all).forEach(function (k) { if (!out.some(function (o) { return o.id === k; })) out.push(all[k]); });
+    Object.keys(all).forEach(function (k) { if (!out.some(function (o) { return o.id === k; })) out.push(normalizeState(all[k])); });
+    out = out.map(normalizeState);
     out.sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
     var fresh = {};
     out.forEach(function (r) { fresh[r.id] = xpOf(r); });
@@ -1015,7 +1172,15 @@ textarea.s { min-height: 72px; }
     var d = new Date(ts || Date.now());
     return d.toLocaleDateString("ko-KR", { month: "long", day: "numeric" }) + " " + d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
   }
-  var pendingDelete = null;
+  var pendingDelete = null, recFilter = "all", recQuery = "";
+  function recordStatus(v) { return ({ draft: "작성 중", checking: "확인하러 감", validation_needed: "검증 결과 입력 필요", complete: "발굴 완료" })[v] || "작성 중"; }
+  function isTinyDraft(r) {
+    return !!r.problem.trim() && !r.whys.some(function (w) { return w.a.trim(); }) && !r.finalProblem.trim();
+  }
+  function downloadText(name, body) {
+    var a = document.createElement("a"), url = URL.createObjectURL(new Blob([body], { type: "text/plain;charset=utf-8" }));
+    a.href = url; a.download = name; a.click(); setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
   async function renderRecords() {
     var box = $("#viewRecords");
     box.textContent = "불러오는 중…";
@@ -1027,30 +1192,56 @@ textarea.s { min-height: 72px; }
       $("div", em).textContent = "아직 발굴한 문제가 없어요. 발굴하기 탭에서 문제를 한 줄 쓰면 이곳에 자동으로 쌓이고, 처음 문제와 뾰족해진 문제를 나란히 비교할 수 있어요.";
       box.appendChild(em); return;
     }
+    var tools = document.createElement("div"); tools.className = "filters";
+    [["all", "전체"], ["draft", "작성 중"], ["checking", "확인 중"], ["complete", "완료"]].forEach(function (it) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn small" + (recFilter === it[0] ? "" : " ghost"); b.textContent = it[1];
+      b.addEventListener("click", function () { recFilter = it[0]; renderRecords(); }); tools.appendChild(b);
+    });
+    var search = document.createElement("input"); search.type = "search"; search.placeholder = "제목·문제·태그 검색"; search.value = recQuery;
+    search.addEventListener("input", function () { recQuery = search.value; clearTimeout(search._t); search._t = setTimeout(renderRecords, 200); });
+    tools.appendChild(search); box.appendChild(tools);
+    var qText = recQuery.trim().toLowerCase();
+    recs = recs.filter(function (r) {
+      var matchStatus = recFilter === "all" || (recFilter === "checking" ? r.status === "checking" || r.status === "validation_needed" : r.status === recFilter);
+      var hay = [r.title, r.problem, r.finalProblem, r.tags].join(" ").toLowerCase();
+      return matchStatus && (!qText || hay.indexOf(qText) >= 0);
+    });
+    if (!recs.length) { var none = document.createElement("div"); none.className = "empty"; none.textContent = "조건에 맞는 기록이 없어요."; box.appendChild(none); return; }
     recs.forEach(function (r) {
       var c = document.createElement("article"); c.className = "rec";
       var when = document.createElement("div"); when.className = "when"; when.textContent = fmt(r.updatedAt);
       var rh = document.createElement("div"); rh.className = "recHead";
-      var rx = xpOf(r);
-      var chip = document.createElement("span"); chip.className = "chip"; chip.textContent = "+" + rx + " XP · " + Math.round(rx / 6) + "점";
+      var chip = document.createElement("span"); chip.className = "status-chip"; chip.textContent = recordStatus(r.status) + (isTinyDraft(r) ? " · 임시 초안" : "");
       rh.append(when, chip);
+      var meta = document.createElement("div"); meta.className = "rec-meta";
+      var title = document.createElement("input"); title.value = r.title || ""; title.placeholder = "기록 제목";
+      var tags = document.createElement("input"); tags.value = r.tags || ""; tags.placeholder = "태그 (쉼표로 구분)";
+      function saveMeta() { r.title = title.value; r.tags = tags.value; r.updatedAt = Date.now(); persist(clone(r)); if (S.id === r.id) { S.title = r.title; S.tags = r.tags; } }
+      title.addEventListener("change", saveMeta); tags.addEventListener("change", saveMeta); meta.append(title, tags);
       var sh = document.createElement("div"); sh.className = "shift";
       var a = document.createElement("div"); a.className = "before";
       var ak = document.createElement("span"); ak.className = "k"; ak.textContent = "처음 문제";
       a.append(ak, r.problem || "-");
       var b = document.createElement("div"); b.className = "after";
-      var bk = document.createElement("span"); bk.className = "k"; bk.textContent = "뾰족해진 문제 · SCQA의 문제";
-      b.append(bk, (r.scqa && r.scqa.c && r.scqa.c.trim()) || "아직 SCQA를 쓰지 않았어요.");
+      var bk = document.createElement("span"); bk.className = "k"; bk.textContent = "현재 최종 문제";
+      b.append(bk, r.finalProblem.trim() || "아직 최종 문제를 확정하지 않았어요.");
       sh.append(a, b);
-      c.append(rh, sh);
+      c.append(rh, meta, sh);
+      var check = document.createElement("div"); check.className = "note"; check.textContent = r.validation.savedAt ? "검증 결과 있음 · " + fmt(r.validation.savedAt) : "검증 결과 없음"; c.appendChild(check);
       if (r.scqa && r.scqa.q && r.scqa.q.trim()) {
         var q = document.createElement("div"); q.className = "note"; q.textContent = "질문: " + r.scqa.q; c.appendChild(q);
       }
       var row = document.createElement("div"); row.className = "row";
       var open = document.createElement("button"); open.type = "button"; open.className = "btn small"; open.textContent = "열어서 이어 파기";
       open.addEventListener("click", function () {
-        S = merge(blank(), clone(r)); applyState(); switchTab("practice"); gotoPos(0, 0);
+        S = normalizeState(clone(r)); applyState(); switchTab("practice"); gotoPos(r.status === "draft" ? 0 : 3, 0);
       });
+      var verify = document.createElement("button"); verify.type = "button"; verify.className = "btn small ghost"; verify.textContent = "검증 결과 입력";
+      verify.addEventListener("click", function () { S = normalizeState(clone(r)); S.returnedAt = S.returnedAt || Date.now(); if (S.status === "checking") S.status = "validation_needed"; saveNow(); applyState(); switchTab("practice"); gotoPos(3, 1); });
+      var copy = document.createElement("button"); copy.type = "button"; copy.className = "btn small ghost"; copy.textContent = "전체 복사";
+      copy.addEventListener("click", function () { copyText(resultText(r), c, check); });
+      var exp = document.createElement("button"); exp.type = "button"; exp.className = "btn small ghost"; exp.textContent = "내보내기";
+      exp.addEventListener("click", function () { downloadText((r.title || "문제-발굴-결과") + ".txt", resultText(r)); });
       var del = document.createElement("button"); del.type = "button"; del.className = "btn small ghost";
       del.textContent = pendingDelete === r.id ? "정말 삭제" : "삭제";
       if (pendingDelete === r.id) del.classList.add("danger");
@@ -1058,7 +1249,7 @@ textarea.s { min-height: 72px; }
         if (pendingDelete !== r.id) { pendingDelete = r.id; renderRecords(); return; }
         pendingDelete = null; await removeRecord(r.id); renderRecords();
       });
-      row.append(open, del);
+      row.append(open, verify, copy, exp, del);
       c.appendChild(row);
       box.appendChild(c);
     });
@@ -1093,8 +1284,7 @@ textarea.s { min-height: 72px; }
         var r = await reader.read();
         if (r.done) break;
         buf += dec.decode(r.value, { stream: true });
-        var lines = buf.split("
-"); buf = lines.pop();
+        var lines = buf.split("\n"); buf = lines.pop();
         for (var i = 0; i < lines.length; i++) {
           var ln = lines[i].trim();
           if (ln.indexOf("data:") !== 0) continue;
@@ -1115,11 +1305,26 @@ textarea.s { min-height: 72px; }
     return { text: text, truncated: false };
   }
 
-  /* ---------- 시작 ---------- */
-  applyState(); gotoPos(0, 0);
+  async function checkServer() {
+    var badge = $("#serverState");
+    try {
+      var res = await fetch("/api/health", { cache: "no-store" });
+      if (!res.ok) throw new Error("offline");
+      var info = await res.json();
+      if (info.ai) {
+        sampleFn = apiSample; badge.textContent = "AI 사용 가능"; badge.classList.add("ok");
+      } else {
+        sampleFn = null; badge.textContent = "API 키 없음 · 직접 작성 가능"; badge.classList.remove("ok");
+      }
+    } catch (e) {
+      sampleFn = null; badge.textContent = "AI 서버 꺼짐 · 직접 작성 가능"; badge.classList.remove("ok");
+    }
+    refresh();
+  }
 
-  sampleFn = apiSample;
-  refresh();
+  /* ---------- 시작 ---------- */
+  S = normalizeState(S); applyState(); gotoPos(0, 0);
+  checkServer();
   listRecords();
 })();
 </script>
